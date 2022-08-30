@@ -1,5 +1,5 @@
 # Installing Source Files and Dependencies
-* Install [Zephyr and Zephyr SDK]([https://docs.zephyrproject.org/latest/develop/getting_started/index.html])
+* Install [Zephyr and Zephyr SDK][https://docs.zephyrproject.org/latest/develop/getting_started/index.html]
 
 # Verify Installation
 * Build sample program by running the following comands from the zephyr directory
