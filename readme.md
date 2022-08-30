@@ -2,8 +2,13 @@
 * Install [Zephyr and Zephyr SDK]([https://docs.zephyrproject.org/latest/develop/getting_started/index.html])
 
 # Verify Installation
+* Build sample program by running the following comands from the zephyr directory
 * `cd zephyrproject/zephyr`
-* Build sample program `west build -b nrf52840dk_nrf52840 -d peripheral samples/bluetooth/peripheral_hr`
+* `west build -b nrf52840dk_nrf52840 -d peripheral samples/bluetooth/peripheral_hr`
+
+
+
+
 
 
 # code to genereate peripheral_hr elf file
