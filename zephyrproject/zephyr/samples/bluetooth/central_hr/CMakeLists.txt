@@ -7,7 +7,7 @@ project(central_hr)
 FILE(GLOB app_sources src/*.c)
 target_sources(app PRIVATE ${app_sources})
 
-target_sources(app PRIVATE src/model.c)
+# target_sources(app PRIVATE src/model.c)
 
 
 zephyr_library_include_directories(${ZEPHYR_BASE}/samples/bluetooth)

@@ -24,7 +24,7 @@
 
 #include "model.h"
 
-LOG_MODULE_REGISTER(main);
+// LOG_MODULE_REGISTER(main);
 
 
 static void start_scan(void);
@@ -68,8 +68,8 @@ static uint8_t notify_func(struct bt_conn *conn,
 		for(int i=0; i<10;i++){
 			printk("%f\n",inputs[i]);
 		}
-		float result = predict(inputs);
-		printk("res %f\n", result);
+		// float result = predict(inputs);
+		// printk("res %f\n", result);
 	}
 
 	return BT_GATT_ITER_CONTINUE;

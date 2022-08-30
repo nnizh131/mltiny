@@ -18,7 +18,7 @@ Run the following commands from the zephyrproject/zephyr directory
 * `cp peripheral/zephyr/zephyr.elf ./zephyr-ble-peripheral_hr.elf`
 
 * `west build -b nrf52840dk_nrf52840 -d central samples/bluetooth/central_hr`
-* `cp central_hr/zephyr/zephyr.elf ./zephyr-ble-central_hr.elf`
+* `cp central/zephyr/zephyr.elf ./zephyr-ble-central_hr.elf`
 
 
 # Install Renode

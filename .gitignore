@@ -20,3 +20,6 @@ models/*
 
 .vscode
 
+
+ble.resc
+*.elf
