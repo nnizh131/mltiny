@@ -13,6 +13,7 @@
 * `git reset --hard origin/master`
 
 # Build the Binaries
+Run the following commands from the zephyrproject/zephyr directory
 * `west build -b nrf52840dk_nrf52840 -d peripheral samples/bluetooth/peripheral_hr`
 * `cp peripheral/zephyr/zephyr.elf ./zephyr-ble-peripheral_hr.elf`
 
@@ -28,6 +29,6 @@
 
 ble.resc file describes the CPU platform that is used in the simulation as well as runs the Zephyr OS and binary .elf files generated from the code above.
 
-# Open Renode application and run the folloowing script with the correct path to ble.resc file.
-# `include @path/to/ble.resc
-# 
+* Open Renode application and run the folloowing script with the correct path to ble.resc file.
+* `include @path/to/ble.resc` 
+ 
