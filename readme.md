@@ -6,7 +6,6 @@
 * `cd zephyrproject/zephyr`
 * `west build -b nrf52840dk_nrf52840 -d peripheral samples/bluetooth/peripheral_hr`
 
-ass
 # Merge with this git repository
 * `git init`
 * `git add remote origin git@github.com:nnizh131/TinyML.git'
