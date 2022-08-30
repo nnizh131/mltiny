@@ -1,3 +1,7 @@
+# Installing Source Files and Dependencies
+* Item  
+
+
 # code to genereate peripheral_hr elf file
 west build -b nrf52840dk_nrf52840 -d peripheral samples/bluetooth/peripheral_hr
 cp peripheral_hr/zephyr/zephyr.elf ./zephyr-ble-peripheral_hr.elf
