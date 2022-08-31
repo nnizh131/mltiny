@@ -19,10 +19,10 @@
 #include <zephyr/bluetooth/gatt.h>
 #include <zephyr/sys/byteorder.h>
 
-#include <stdio.h>
 
 
-#include "model.h"
+
+#include "RandomForestRegressor.h"
 
 // LOG_MODULE_REGISTER(main);
 
@@ -54,22 +54,21 @@ static uint8_t notify_func(struct bt_conn *conn,
 	// float a = 0.234;
 	// printk("%f works\n", a);
 	// printk("%f data\n", ((flaot *)data)[0]);
-	for(int j = 0; j < length/sizeof(float); j++){
+	for(int j = 0; j < 5; j++){
   		// printk("%f\n", ((float *) data)[j]);
 		if(count < 10){
 			inputs[count] = ((float *) data)[j];
 		}
 		count++;
 	}
-	
 	printk("count %d\n", count);
-	if (count==30){
+	if (count==10){
 		count = 0;
 		for(int i=0; i<10;i++){
 			printk("%f\n",inputs[i]);
 		}
-		// float result = predict(inputs);
-		// printk("res %f\n", result);
+		float result = predict(inputs);
+		printk("res %f\n", result);
 	}
 
 	return BT_GATT_ITER_CONTINUE;

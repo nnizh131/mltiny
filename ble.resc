@@ -12,8 +12,8 @@ using sysbus
 
 # Lines below declare binary files for Zephyr BLE devices. One for central device and one for peripheral device.
 # Binaries used here are defaults and can be replaced by changing variables below before running this script.
-$central_bin?=@/Users/nikanizharadze/Desktop/ml/zephyr-ble-central_hr.elf
-$beacon_bin?=@/Users/nikanizharadze/Desktop/ml/zephyr-ble-peripheral_hr.elf
+$central_bin?=@C:\\Users\\nini\\Desktop\\TinyML\\zephyr-ble-central_hr.elf
+$beacon_bin?=@C:\\Users\\nini\\Desktop\\TinyML\\zephyr-ble-peripheral_hr.elf
 
 
 # Create a wireless medium for communication.
