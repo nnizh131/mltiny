@@ -23,20 +23,26 @@ emulation CreateBLEMedium "wireless"
 mach create "central"
 machine LoadPlatformDescription @platforms/cpus/nrf52840.repl
 connector Connect sysbus.radio wireless
+machine EnableProfiler "C:\\Users\\nini\\Desktop\\TinyML\\central_metrics.dump"
 
 # Create a UART analyzer for the "central" machine. 
 # UART analyzer is a window which will pop-up after starting the emulation.
 # In general it works as an I/O interface for the user to communicate with the running machine.
 # In this script both analyzers just print output from the machines.
 showAnalyzer uart0 
+# enable metrics
+
+
 
 # Create a machine named "peripheral" based on the nRF52840 platform and set it as active.
 mach create "beacon"
 machine LoadPlatformDescription @platforms/cpus/nrf52840.repl
 connector Connect sysbus.radio wireless
-
+machine EnableProfiler "C:\\Users\\nini\\Desktop\\TinyML\\peripheral_metrics.dump"
 # Create a UART analyzer for the "peripheral" machine.
 showAnalyzer uart0 
+
+
 
 # Set Quantum value for CPUs. This is required by BLE stack.
 # Moreover, it allows better synchronisation between machines.

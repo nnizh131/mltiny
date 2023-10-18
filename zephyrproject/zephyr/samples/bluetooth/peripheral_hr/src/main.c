@@ -106,7 +106,7 @@ void main(void)
 		/* Heartrate measurements simulation */
 		hrs_notify(sample_id);
 		sample_id++;
-		if (sample_id == 3){
+		if (sample_id == 20){
 			break;
 		}
 	}

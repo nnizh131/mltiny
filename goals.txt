@@ -1,5 +1,0 @@
-1. Use python to establish multi-node communication/ renode
-2. send signal from tag to anchor UART
-
-
-include @C:\Users\nini\Desktop\Renode\m4.resc

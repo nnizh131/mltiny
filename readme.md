@@ -8,7 +8,7 @@
 
 # Merge with this git repository
 * `git init`
-* `git add remote origin git@github.com:nnizh131/TinyML.git`
+* `git remote add origin git@github.com:nnizh131/TinyML.git`
 * `git fetch --all`
 * `git reset --hard origin/master`
 

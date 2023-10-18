@@ -17,10 +17,15 @@ binaries/*
 zephyr-sdk-0.14.2/*
 zephyr-sdk-0.15.0/*
 
-ble.resc
+/ble.resc
 *.elf
 
-.vscode
+.ipynb_checkpoints/
+
+*.dump
+
+
+*.vscode
 
 zephyrproject/*
 !zephyrproject/zephyr
@@ -29,13 +34,18 @@ zephyrproject/zephyr/*
 !zephyrproject/zephyr/include
 
 zephyrproject/zephyr/include/*
-!zephyrproject/zephyr/include/bluetooth
+!zephyrproject/zephyr/include/zephyr
 
-zephyrproject/zephyr/include/bluetooth/*
-!zephyrproject/zephyr/include/bluetooth/services
+zephyrproject/zephyr/include/zephyr/*
+!zephyrproject/zephyr/include/zephyr/bluetooth
 
-zephyrproject/zephyr/include/bluetooth/services/*
-!zephyrproject/zephyr/include/bluetooth/services/hrs.h
+zephyrproject/zephyr/include/zephyr/bluetooth/*
+!zephyrproject/zephyr/include/zephyr/bluetooth/services
+
+zephyrproject/zephyr/include/zephyr/bluetooth/services/*
+!zephyrproject/zephyr/include/zephyr/bluetooth/services/hrs.h
+
+
 
 zephyrproject/*
 !zephyrproject/zephyr
@@ -50,7 +60,7 @@ zephyrproject/zephyr/subsys/bluetooth/*
 !zephyrproject/zephyr/subsys/bluetooth/services
 
 zephyrproject/zephyr/subsys/bluetooth/services/*
-!zephyrproject\zephyr\subsys\bluetooth\services\hrs.c
+!zephyrproject/zephyr/subsys/bluetooth/services/hrs.c
 
 
 

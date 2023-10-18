@@ -20,16 +20,25 @@
 #include <zephyr/sys/byteorder.h>
 
 
+// #include "genNN.h"
+// #include "tinyengine_function.h"
+
+#include "ml_models/singlechannel/RandomForestRegressor().h"
+// #include "nnom.h"
+
+#include "pdda/df_algorithm.h"
 
 
-#include "RandomForestRegressor.h"
+// #include "ml_models/DecisionTreeRegressor().h"
+// #include "ml_models/multichannel/LinearRegression().h"
 
-// LOG_MODULE_REGISTER(main);
+
 
 
 static void start_scan(void);
 
 static struct bt_conn *default_conn;
+
 
 static struct bt_uuid_16 uuid = BT_UUID_INIT_16(0);
 static struct bt_gatt_discover_params discover_params;
@@ -38,7 +47,13 @@ static struct bt_gatt_subscribe_params subscribe_params;
 
 static int count = 0;
 static float inputs[10];
-
+static float multi_inputs[30] = {-1.06498225, -1.02169505, -0.88210107,  0.36731684, -0.34239239,
+        0.43721337, -0.24015097, -0.44909086,  0.0101671 , -0.67371197,
+       -0.9594799 , -0.69148155, -0.46643819,  0.12041559,  0.08175228,
+        0.09414331, -0.08858204, -0.2395787 ,  0.37089802, -0.30053167,
+       -0.90672872, -0.53291384, -0.4952998 ,  0.15463726, -0.11381661,
+        0.10600844, -0.53721834, -0.38098864, -0.16580797,  0.08724365};
+// nnom_model_t* model;
 
 static uint8_t notify_func(struct bt_conn *conn,
 			   struct bt_gatt_subscribe_params *params,
@@ -49,27 +64,39 @@ static uint8_t notify_func(struct bt_conn *conn,
 		params->value_handle = 0U;
 		return BT_GATT_ITER_STOP;
 	}
-	// printk("%f\n", data);
+
 	printk("[NOTIFICATION] data %p length %u\n", data, length);
 	// float a = 0.234;
 	// printk("%f works\n", a);
 	// printk("%f data\n", ((flaot *)data)[0]);
-	for(int j = 0; j < 5; j++){
+	for(int j = 0; j < length/sizeof(float); j++){
   		// printk("%f\n", ((float *) data)[j]);
 		if(count < 10){
 			inputs[count] = ((float *) data)[j];
 		}
 		count++;
 	}
-	printk("count %d\n", count);
-	if (count==10){
+
+	if (count==0){
 		count = 0;
 		for(int i=0; i<10;i++){
 			printk("%f\n",inputs[i]);
 		}
-		float result = predict(inputs);
-		printk("res %f\n", result);
-	}
+
+		// uint32_t predic_label;
+		// float prob;
+		// int8_t* input;
+		// model_run(model);
+		// float p = (float)(nnom_output_data[0]) / 127.f;
+		// nnom_predict(model, &predic_label, &prob);
+		// printk("predicted - %f, true label - 45\n", p);
+		// printk("predicted - %d, true label - 45\n", nnom_output_data[0]);
+		// printk("%f\n", data);
+		// int8_t* input;
+		// float result = score(multi_inputs);
+		float result = score(inputs);
+		printk("predicted - %f, true label - 45\n", result);
+	}   
 
 	return BT_GATT_ITER_CONTINUE;
 }
@@ -290,6 +317,83 @@ void main(void)
 	// }
 
 	printk("Bluetooth initialized\n");
+	// model = nnom_model_create();
+
+	// memcpy(nnom_input_data, input, sizeof(nnom_input_data));
+
+	
+	struct df_algorithm_config algoConf;
+	struct nvs_config config;
+
+	printk("pdda start"); 
+
+	config.cteTime8us = DF_DEFAULT_CONFIG_C211_CTE_TIME_8US;
+	config.nAnt = DF_DEFAULT_CONFIG_C211_NUM_ANTENNAS;
+	config.nPhysicalAnt = config.nAnt;
+	config.dElem = DF_DEFAULT_CONFIG_C211_ANTENNA_DISTANCE;
+	config.antennaLayout = DF_DEFAULT_CONFIG_C211_ANTENNA_LAYOUT;
+	strcpy(config.antennaName, DF_DEFAULT_CONFIG_C211_ANTENNA_NAME);
+	const uint8_t swPattern[2 * DF_ALGORITHM_ANTENNAS_MAX] = DF_DEFAULT_CONFIG_C211_SW_PATTERN;
+	memcpy(config.swPattern, swPattern, sizeof(swPattern));
+	config.swLen = DF_DEFAULT_CONFIG_C211_SW_LEN;
+	config.nPhiElemSubarrays = DF_DEFAULT_CONFIG_C211_PHI_EL_SUBARRAYS;
+	config.nThetaElemSubarrays = DF_DEFAULT_CONFIG_C211_THETA_EL_SUBARRAYS;
+	const uint8_t nPhiElem[DF_ALGORITHM_SUBARRAYS_MAX] = DF_DEFAULT_CONFIG_C211_NUM_PHI_EL;
+	const uint8_t nThetaElem[DF_ALGORITHM_SUBARRAYS_MAX] = DF_DEFAULT_CONFIG_C211_NUM_THETA_EL;
+	memcpy(config.nPhiElem, nPhiElem, sizeof(nPhiElem));
+	memcpy(config.nThetaElem, nThetaElem, sizeof(nThetaElem));
+	const uint8_t phiElem[DF_ALGORITHM_SUBARRAYS_MAX][DF_ALGORITHM_ANTENNAS_MAX] =
+		DF_DEFAULT_CONFIG_C211_PHI_EL;
+	const uint8_t thetaElem[DF_ALGORITHM_SUBARRAYS_MAX][DF_ALGORITHM_ANTENNAS_MAX] =
+		DF_DEFAULT_CONFIG_C211_THETA_EL;
+	memcpy(config.phiElem, phiElem, sizeof(phiElem));
+	memcpy(config.thetaElem, thetaElem, sizeof(thetaElem));
+
+	// config->antennaType = U_DF_PROD_ANT_CFG_C211;
+	config.invertPhi = DF_DEFAULT_CONFIG_C211_INVERT_PHI;
+	config.invertTheta = DF_DEFAULT_CONFIG_C211_INVERT_THETA;
+    int i, j;
+
+// 	/* load default configuration */
+    df_algorithm_get_default_config(&algoConf);
+	
+//     uDfCfgFillDefault(U_DF_PROD_ANT_CFG_C211, &nvsConf);
+  for (j = 0; j < config.nPhiElemSubarrays; j++) {
+        algoConf.n_phi_el[j]     = config.nPhiElem[j];
+        for (i = 0; i < config.nPhiElem[j]; i++) {
+            algoConf.phi_el[j][i] = config.phiElem[j][i];
+        }
+    }
+
+    for (j = 0; j < config.nThetaElemSubarrays; j++) {
+        algoConf.n_theta_el[j]    = config.nThetaElem[j];
+        for (i = 0; i < config.nThetaElem[j]; i++) {
+            algoConf.theta_el[j][i] = config.thetaElem[j][i];
+        }
+    }
+    algoConf.nbr_rep = (82 - 8) / (config.swLen * 2);
+    algoConf.sw_len = config.swLen * algoConf.nbr_rep;
+    algoConf.n_ant = config.nAnt;
+    algoConf.d_elem = config.dElem;
+	algoConf.antenna_type = DF_ALGORITHM_ANTENNA_ROW;
+    algoConf.n_ant_physical = 3;
+
+	if (0 != df_algorithm_setup(&algoConf)) {
+        printk("df_algorithm_setup() failed");
+    } else {
+        printk("Setup alg. successfully!\n");
+    }
+	printk("sps %u\n", algoConf.sps);
+
+	float32_t pPhiEst;
+	float32_t pThetaEst;
+	uint8_t channel = 39;
+
+	int8_t iqBuffer[82 * 2] = {32, -33, -25, 40, 26, -37, -27, 38, 28, -37, -23, 40, 24, -40, -20, 43, 1, 13, 14, 11, 19, 23, -4, 10, 15, 11, 16, 19, -11, 48, 1, 50, 17, 46, -6, 50, 7, 49, 26, 42, 7, 7, 18, 2, 24, 12, 5, 6, 19, -1, 25, 4, 21, 44, 32, 43, 35, 31, 18, 43, 37, 35, 48, 17, 14, 1, 16, -9, 27, -5, 12, 2, 17, -10, 22, -7, 37, 30, 47, 16, 45, -2, 43, 24, 50, 13, 51, -5, 9, -5, 10, -16, 20, -19, 11, -4, 9, -18, 18, -19, 51, 1, 50, -13, 40, -26, 48, -5, 49, -13, 43, -30, 9, -8, -1, -21, 8, -25, 9, -12, -2, -19, 6, -27, 44, -28, 35, -35, 25, -42, 42, -30, 31, -39, 18, -46, 4, -12, -12, -16, -11, -25, -1, -10, -15, -15, -13, -24, 22, -45, 15, -48, -6, -51, 15, -46, 7, -52, -14, -49, -2, -10, -19, -10};
+	// int8_t iqBuffer[10 * 1] = {32, -33, -25, 40, 26, -37, -27, 38, 28, -37};
+	df_algorithm_docalc((cint8_t *)iqBuffer, channel, &pPhiEst, &pThetaEst);
+	printk("Estimates: %f, %f\n", pPhiEst, pThetaEst);	
 
 	start_scan();
+
 }
